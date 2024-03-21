@@ -10,7 +10,6 @@ import Security
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
-	
 	// MARK: - @IBOUTLETS
 	@IBOutlet var nameField: UITextField!
 	@IBOutlet var emailField: UITextField!
@@ -24,6 +23,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 		nameField.delegate = self
 		emailField.delegate = self
 	}
+	
 	
 	// MARK: - @IBACTION
 	@IBAction func signUpButton(_ sender: UIButton) {
@@ -46,6 +46,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
 	
 
 	// MARK: - FUNCTIONS
+	/// Method for validating name text field
+	/// - Parameters:
+	///   - textField: The name field
+	///   - range: Range of number of characters we are validating
+	///   - string: The text user has entered
+	/// - Returns: True or False based on if user has entered a name that is at least 3 characters or longer.
 	func textField(
 		_ textField: UITextField,
 		shouldChangeCharactersIn range: NSRange,
@@ -64,11 +70,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
 		}
 	}
 	
+	/// Method needed for registering input of textFields
+	/// - Parameter textField: name, email, password fields
+	/// - Returns: True or False on whether info was input to those fields
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		textField.resignFirstResponder()
 		return true
 	}
 	
+	/// Method for validating email field has been entered
+	/// - Parameter textField: the user input field
 	func textFieldDidEndEditing(_ textField: UITextField) {
 		// Validate email format when editing ends
 		if let email = textField.text, !isValidEmail(email) {
@@ -76,20 +87,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
 		}
 	}
 	
+	/// Checks email text field input for validation
+	/// - Parameter email: user inputted email address
+	/// - Returns: returns true or false based on whether user input meets validation criteria
 	func isValidEmail(_ email: String) -> Bool {
 		let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
 		let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
 		return emailPredicate.evaluate(with: email)
 	}
 	
-	
-	
+	/// Method for displaying an alert
+	/// - Parameter message: changes message when method is called based on alert context
 	func showAlert(message: String) {
 		let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 		present(alert, animated: true)
 	}
 	
+	/// Method for saving user input to keychain
+	/// - Parameters:
+	///   - name: First and Last name of user
+	///   - email: email address of user
+	///   - password: password for user
 	func saveToKeychain(name: String, email: String, password: String) {
 		let query: [String: Any] = [
 			kSecClass as String: kSecClassGenericPassword,
