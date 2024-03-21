@@ -42,8 +42,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
 		nameField.text = ""
 		emailField.text = ""
 		passwordField.text = ""
+		
+		// Dismiss the keyboard
+		view.endEditing(true)
+		
+		if let recipeViewController = storyboard?.instantiateViewController(
+			withIdentifier: "RecipeViewController"
+		) as? RecipeViewController {
+			navigationController?.pushViewController(recipeViewController, animated: true)
+		}
 	}
-	
 
 	// MARK: - FUNCTIONS
 	/// Method for validating name text field
@@ -68,14 +76,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
 			showAlert(message: "Your name should be at least 3 characters long.")
 			return false
 		}
-	}
-	
-	/// Method needed for registering input of textFields
-	/// - Parameter textField: name, email, password fields
-	/// - Returns: True or False on whether info was input to those fields
-	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-		textField.resignFirstResponder()
-		return true
 	}
 	
 	/// Method for validating email field has been entered
